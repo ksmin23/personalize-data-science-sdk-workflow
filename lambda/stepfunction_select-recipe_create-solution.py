@@ -9,7 +9,8 @@ personalize = boto3.client('personalize', region_name=AWS_REGION_NAME)
 
 def lambda_handler(event, context):
     list_recipes_response = personalize.list_recipes()
-    recipe_arn = "arn:aws:personalize:::recipe/aws-user-personalization" # aws-hrnn selected for demo purposes
+    recipe = [e for e in list_recipes_response if e['name'] == event['recipe']]
+    recipe_arn = recipe[0]['recipeArn']
 
     create_solution_response = personalize.create_solution(
         name = "stepfunction-solution",
