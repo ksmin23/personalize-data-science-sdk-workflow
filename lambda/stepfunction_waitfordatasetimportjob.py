@@ -6,7 +6,6 @@ personalize = boto3.client('personalize')
 personalize_runtime = boto3.client('personalize-runtime')
 
 def lambda_handler(event, context):
-    # TODO implement
     describe_dataset_import_job_response = personalize.describe_dataset_import_job(
         datasetImportJobArn = event['dataset_import_job_arn']
     )
@@ -17,9 +16,4 @@ def lambda_handler(event, context):
         'status': status,
         'dataset_import_job_arn': event['dataset_import_job_arn'],
         'datasetGroupArn': event['datasetGroupArn']
-        
-        #'o': status,
-        #'datasetGroupArn': datasetGroupArnVal
-        
-        #'body': json.dumps('Hello from Lambda!')
     }

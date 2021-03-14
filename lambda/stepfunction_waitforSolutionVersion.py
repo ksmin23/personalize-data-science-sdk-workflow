@@ -15,8 +15,4 @@ def lambda_handler(event, context):
     return {
         'status': status,
         'solution_version_arn': event['solution_version_arn'] 
-        #'DatasetGroup': status,
-        #'datasetGroupArn': datasetGroupArnVal
-        
-        #'body': json.dumps('Hello from Lambda!')
     }
