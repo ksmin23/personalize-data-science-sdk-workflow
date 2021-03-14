@@ -1,11 +1,16 @@
+import os
 import json
-import boto3
 import base64
+
+import boto3
+
+AWS_REGION_NAME = os.getenv('AWS_REGION_NAME', 'us-east-1')
+
 
 def lambda_handler(event, context):
     #### Attach Policy to S3 Bucket
 
-    s3 = boto3.client("s3")
+    s3 = boto3.client("s3", region_name=AWS_REGION_NAME)
 
     policy = {
         "Version": "2012-10-17",
@@ -32,7 +37,7 @@ def lambda_handler(event, context):
     s3.put_bucket_policy(Bucket=event['bucket'], Policy=json.dumps(policy))
 
     #### Create Personalize Role
-    iam = boto3.client("iam")
+    iam = boto3.client("iam", region_name=AWS_REGION_NAME)
 
     role_name = "PersonalizeRole"
     assume_role_policy_document = {
@@ -66,8 +71,6 @@ def lambda_handler(event, context):
     time.sleep(60) # wait for a minute to allow IAM role policy attachment to propagate
 
     role_arn = create_role_response["Role"]["Arn"]
-    print(role_arn)
-
     return {
         'statusCode': 200,
         'role_arn':role_arn

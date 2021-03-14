@@ -1,12 +1,14 @@
+import os
 import json
 import base64
+
 import boto3
 
-personalize = boto3.client('personalize')
-personalize_runtime = boto3.client('personalize-runtime')
+AWS_REGION_NAME = os.getenv('AWS_REGION_NAME', 'us-east-1')
+personalize = boto3.client('personalize', region_name=AWS_REGION_NAME)
+
 
 def lambda_handler(event, context):
-
     schema = {
         "type": "record",
         "name": "Interactions",

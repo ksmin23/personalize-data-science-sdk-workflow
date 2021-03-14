@@ -1,12 +1,13 @@
+import os
 import json
-import boto3
 import base64
 
-personalize = boto3.client('personalize')
-personalize_runtime = boto3.client('personalize-runtime')
+import boto3
+
+AWS_REGION_NAME = os.getenv('AWS_REGION_NAME', 'us-east-1')
+personalize = boto3.client('personalize', region_name=AWS_REGION_NAME)
 
 def lambda_handler(event, context):
-
     list_recipes_response = personalize.list_recipes()
     recipe_arn = "arn:aws:personalize:::recipe/aws-user-personalization" # aws-hrnn selected for demo purposes
 
