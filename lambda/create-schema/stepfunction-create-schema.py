@@ -1,6 +1,7 @@
 import os
 import json
 import base64
+import traceback
 
 import boto3
 
@@ -30,13 +31,18 @@ def lambda_handler(event, context):
         "version": "1.0"
     }
 
-    create_schema_response = personalize.create_schema(
-        name = event['input'],
-        schema = json.dumps(schema)
-    )
-
-    schema_arn = create_schema_response['schemaArn']
-    print(json.dumps(create_schema_response, indent=2))
+    try:
+        create_schema_response = personalize.create_schema(
+            name = event['input'],
+            schema = json.dumps(schema)
+        )
+        schema_arn = create_schema_response['schemaArn']
+        print(json.dumps(create_schema_response, indent=2))
+    except personalize.exceptions.ResourceAlreadyExistsException as ex:
+        traceback.print_exc()
+        schema_list = personalize.list_schemas()
+        schema_data = [e for e in schema_list['schemas'] if e['name'] == event['input']][0]
+        schema_arn = schema_data['schemaArn']
 
     return {
         'statusCode': 200,
