@@ -10,12 +10,12 @@ personalize = boto3.client('personalize', region_name=AWS_REGION_NAME)
 
 def lambda_handler(event, context):
     describe_campaign_response = personalize.describe_campaign(
-        campaignArn = event['campaign_arn']
+        campaignArn = event['campaignArn']
     )
     status = describe_campaign_response["campaign"]["status"]
     print("Campaign Status: {}".format(status))
 
     return {
         'status': status,
-        'campaign_arn': event['campaign_arn']
+        'campaignArn': event['campaignArn']
     }

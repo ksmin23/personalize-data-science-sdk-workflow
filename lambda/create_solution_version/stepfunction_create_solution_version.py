@@ -18,5 +18,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'solution_version_arn': solution_version_arn
+        'solutionVersionArn': solution_version_arn
     }
